@@ -1,11 +1,14 @@
 import fs from "fs";
 import express from "express";
 import cors from "cors";
+import { configDotenv } from "dotenv";
+configDotenv();
 const app = express();
 app.use(cors());
 app.get("/", (req, res) => {
   res.end("Server Running :)");
 });
+
 app.get("/showdata", (req, res) => {
   fs.readFile("data.txt", "utf-8", (err, data) => {
     if (err) res.end("Some error has occured");
@@ -35,11 +38,11 @@ app.get("/getandclear", (req, res) => {
 });
 
 setInterval(() => {
-  fetch("https://91clubapi.com/api/webapi/GetNoaverageEmerdList", {
+  fetch(process.env.URI, {
     headers: {
       accept: "application/json, text/plain, */*",
       "accept-language": "en-GB,en;q=0.9",
-      authorization: process.env.BEARER,
+      authorization: "",
       "content-type": "application/json;charset=UTF-8",
       priority: "u=1, i",
       "sec-ch-ua": '"Brave";v="129", "Not=A?Brand";v="8", "Chromium";v="129"',
@@ -49,7 +52,7 @@ setInterval(() => {
       "sec-fetch-mode": "cors",
       "sec-fetch-site": "cross-site",
       "sec-gpc": "1",
-      Referer: "https://91club.bet/",
+      Referer: process.env.REF,
       "Referrer-Policy": "strict-origin-when-cross-origin",
     },
     body: '{"pageSize":10,"pageNo":1,"typeId":30,"language":0,"random":"0958f97dd1214613be0505a8a0d4ba77","signature":"E73851EFA6DEAB2F29794C16F29C063A","timestamp":1728590405}',
