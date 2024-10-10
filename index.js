@@ -9,8 +9,7 @@ app.get("/", (req, res) => {
 app.get("/showdata", (req, res) => {
   fs.readFile("data.txt", "utf-8", (err, data) => {
     if (err) res.end("Some error has occured");
-    res.write(data);
-    res.end().status(200);
+    res.write(data, () => res.end().status(200));
   });
 });
 
@@ -20,19 +19,18 @@ app.get("/size", async (req, res) => {
       if (err) res.end(err);
     })
     .then((dat) => {
-      res.write("Size : " + dat.size + " bytes");
-      res.end().status(200);
-    });
-  res.end("Error Occured");
+      res.write("Size : " + dat.size + " bytes", () => res.end().status(200));
+      return;
+    })
+    .catch((err) => res.end("Error Occured"));
 });
 
 app.get("/getandclear", (req, res) => {
   fs.readFile("data.txt", "utf-8", (err, data) => {
     if (err) res.end("Some error has occured");
     fs.writeFile("data.txt", "", () => console.log("Done"));
-    if (data.length != 0) res.write(data);
-    else res.write("File is empty");
-    res.end().status(200);
+    if (data.length != 0) res.write(data, () => res.end().status(200));
+    else res.write("File is empty", () => res.end().status(200));
   });
 });
 
@@ -41,8 +39,7 @@ setInterval(() => {
     headers: {
       accept: "application/json, text/plain, */*",
       "accept-language": "en-GB,en;q=0.9",
-      authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOiIxNzI4NTkwMzk2IiwibmJmIjoiMTcyODU5MDM5NiIsImV4cCI6IjE3Mjg1OTIxOTYiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIxMC8xMS8yMDI0IDE6NTk6NTYgQU0iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBY2Nlc3NfVG9rZW4iLCJVc2VySWQiOiI2MTg4NTUiLCJVc2VyTmFtZSI6IjkxNzM1NTczMDIwNiIsIlVzZXJQaG90byI6IjE4IiwiTmlja05hbWUiOiJNZW1iZXJOTkcwV0ZESiIsIkFtb3VudCI6IjAuNTgiLCJJbnRlZ3JhbCI6IjAiLCJMb2dpbk1hcmsiOiJINSIsIkxvZ2luVGltZSI6IjEwLzExLzIwMjQgMToyOTo1NiBBTSIsIkxvZ2luSVBBZGRyZXNzIjoiNDkuMTU2LjEwNy4xMjgiLCJEYk51bWJlciI6IjAiLCJJc3ZhbGlkYXRvciI6IjAiLCJLZXlDb2RlIjoiNTkiLCJUb2tlblR5cGUiOiJBY2Nlc3NfVG9rZW4iLCJQaG9uZVR5cGUiOiIwIiwiVXNlclR5cGUiOiIwIiwiVXNlck5hbWUyIjoiIiwiaXNzIjoiand0SXNzdWVyIiwiYXVkIjoibG90dGVyeVRpY2tldCJ9.lrdxyumfgNpaZVZLmOFqhyzCJrSCLHthKS1BtV8j0GY",
+      authorization: process.env.BEARER,
       "content-type": "application/json;charset=UTF-8",
       priority: "u=1, i",
       "sec-ch-ua": '"Brave";v="129", "Not=A?Brand";v="8", "Chromium";v="129"',
