@@ -55,16 +55,16 @@ setInterval(() => {
       Referer: process.env.REF,
       "Referrer-Policy": "strict-origin-when-cross-origin",
     },
-    body: '{"pageSize":10,"pageNo":1,"typeId":30,"language":0,"random":"0958f97dd1214613be0505a8a0d4ba77","signature":"E73851EFA6DEAB2F29794C16F29C063A","timestamp":1728590405}',
+    body: '{"pageSize":10,"pageNo":1,"typeId":30,"language":0,"random":"0958f97dd1214613be0505a8a0d4ba77","signature":"E73851EFA6DEAB2F29794C16F29C063A","timestamp":1728596687}',
     method: "POST",
   })
     .then((data) => data.json())
     .then((dat) => {
+      console.log(dat.data[0]);
       var ch = "{'id':" + dat.data.list[0].issueNumber + ",";
-      ch +=
-        dat.data.list[0].number >= 5
-          ? "'type':'Big'},\n"
-          : "'type':'Small'},\n";
+      ch += "'num':" + dat.data.list[0].number + ",";
+      ch += "'col':'" + dat.data.list[0].colour[0] + "',";
+      ch += dat.data.list[0].number >= 5 ? "'type':'B'},\n" : "'type':'S'},\n";
       fs.appendFileSync("data.txt", ch);
       // dat.data.list.forEach((element) => {
       //   console.log(element);
