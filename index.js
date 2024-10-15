@@ -43,8 +43,8 @@ function getdata(timer = 1000) {
         if (lastid == -1 || idx - lastid == 1 || (lastid == 2880 && idx == 1)) {
           lastid = idx;
           fs.appendFileSync("data.txt", ch);
-          return true;
-        } else return false;
+          return;
+        } else getdata();
       })
       .catch((err) => {
         console.log(err);
@@ -113,7 +113,7 @@ setInterval(() => {
         lastid = idx;
         fs.appendFileSync("data.txt", ch);
       } else {
-        while (!getdata());
+        getdata();
       }
     })
     .catch((err) => {
