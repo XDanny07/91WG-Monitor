@@ -67,7 +67,7 @@ setInterval(() => {
       ch += "'num':" + dat.data.list[0].number + ",";
       ch += "'col':'" + dat.data.list[0].colour[0] + "',";
       ch += dat.data.list[0].number >= 5 ? "'type':'B'},\n" : "'type':'S'},\n";
-      if (lastid == -1 || idx - lastid == 1 || (lastid == 2880 && idx == 1)) {
+      if (lastid == -1 || (idx - lastid + 2880) % 2880 == 1) {
         lastid = idx;
         fs.appendFileSync("data.txt", ch);
       }
