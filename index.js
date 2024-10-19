@@ -62,7 +62,9 @@ setInterval(() => {
   })
     .then((data) => data.json())
     .then((dat) => {
-      var idx = Number((dat.data.list[0].issueNumber + "n") % 10000n);
+      let a = "";
+      a += dat.data.list[0].issueNumber;
+      var idx = Number(a.slice(-4));
       var ch = "{'id':" + dat.data.list[0].issueNumber + ",";
       ch += "'num':" + dat.data.list[0].number + ",";
       ch += "'col':'" + dat.data.list[0].colour[0] + "',";
