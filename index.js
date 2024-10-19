@@ -40,7 +40,7 @@ app.get("/getandclear", (req, res) => {
 });
 
 setInterval(() => {
-  fetch(process.env.URI, {
+  fetch("https://91clubapi.com/api/webapi/GetNoaverageEmerdList", {
     headers: {
       accept: "application/json, text/plain, */*",
       "accept-language": "en-US,en;q=0.9",
@@ -48,7 +48,7 @@ setInterval(() => {
       "content-type": "application/json;charset=UTF-8",
       priority: "u=1, i",
       "sec-ch-ua":
-        '"Microsoft Edge";v="129", "Not=A?Brand";v="8", "Chromium";v="129"',
+        '"Chromium";v="130", "Microsoft Edge";v="130", "Not?A_Brand";v="99"',
       "sec-ch-ua-mobile": "?0",
       "sec-ch-ua-platform": '"Windows"',
       "sec-fetch-dest": "empty",
@@ -57,7 +57,7 @@ setInterval(() => {
       Referer: process.env.REF,
       "Referrer-Policy": "strict-origin-when-cross-origin",
     },
-    body: '{"pageSize":10,"pageNo":1,"typeId":30,"language":0,"random":"268bb8903149482ca7ad6e9b0f68bc6a","signature":"49366730F6091DA592F4A82FE64EE3BF","timestamp":1729146471}',
+    body: '{"pageSize":10,"pageNo":1,"typeId":30,"language":0,"random":"1ab77dee5fee4369897f49952e1b8583","signature":"201A716F5A7B0774B59C2B7507766368","timestamp":1729370429}',
     method: "POST",
   })
     .then((data) => data.json())
