@@ -40,7 +40,7 @@ app.get("/getandclear", (req, res) => {
 });
 
 setInterval(() => {
-  fetch("https://91clubapi.com/api/webapi/GetNoaverageEmerdList", {
+  fetch(process.env.URI, {
     headers: {
       accept: "application/json, text/plain, */*",
       "accept-language": "en-US,en;q=0.9",
@@ -62,7 +62,7 @@ setInterval(() => {
   })
     .then((data) => data.json())
     .then((dat) => {
-      var idx = dat.data.list[0].issueNumber % 10000;
+      var idx = Number((dat.data.list[0].issueNumber + "n") % 10000n);
       var ch = "{'id':" + dat.data.list[0].issueNumber + ",";
       ch += "'num':" + dat.data.list[0].number + ",";
       ch += "'col':'" + dat.data.list[0].colour[0] + "',";
