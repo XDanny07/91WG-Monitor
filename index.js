@@ -63,20 +63,19 @@ setInterval(() => {
     .then((data) => data.json())
     .then((dat) => {
       let a = "";
-      a += dat.data.list[0].issueNumber;
+      a += dat.data.list[0].issueNumber.toString();
       var idx = Number(a.slice(-4));
       var ch = "{'id':" + dat.data.list[0].issueNumber + ",";
       ch += "'num':" + dat.data.list[0].number + ",";
       ch += "'col':'" + dat.data.list[0].colour[0] + "',";
       ch += dat.data.list[0].number >= 5 ? "'type':'B'},\n" : "'type':'S'},\n";
       if (lastid == -1 || (idx - lastid + 2880) % 2880 == 1) {
-        lastid = idx;
+        lastid = Number(idx);
         fs.appendFileSync("data.txt", ch);
       }
     })
     .catch((err) => {
       console.log(err);
-      app.close();
     });
 }, 15000);
 
