@@ -10,36 +10,9 @@ app.get("/", (req, res) => {
 });
 
 var lastid = -1;
+var isFetching = false;
 
-app.get("/showdata", (req, res) => {
-  fs.readFile("data.txt", "utf-8", (err, data) => {
-    if (err) res.end("Some error has occured");
-    res.write(data, () => res.end().status(200));
-  });
-});
-
-app.get("/size", async (req, res) => {
-  await fs.promises
-    .stat("data.txt", (err) => {
-      if (err) res.end(err);
-    })
-    .then((dat) => {
-      res.write("Size : " + dat.size + " bytes", () => res.end().status(200));
-      return;
-    })
-    .catch((err) => res.end("Error Occured"));
-});
-
-app.get("/getandclear", (req, res) => {
-  fs.readFile("data.txt", "utf-8", (err, data) => {
-    if (err) res.end("Some error has occured");
-    fs.writeFile("data.txt", "", () => console.log("Done"));
-    if (data.length != 0) res.write(data, () => res.end().status(200));
-    else res.write("File is empty", () => res.end().status(200));
-  });
-});
-
-setInterval(() => {
+async function fetchData() {
   fetch(process.env.URI, {
     headers: {
       accept: "application/json, text/plain, */*",
@@ -77,6 +50,44 @@ setInterval(() => {
     .catch((err) => {
       console.log(err);
     });
+}
+
+app.get("/showdata", (req, res) => {
+  fs.readFile("data.txt", "utf-8", (err, data) => {
+    if (err) res.end("Some error has occured");
+    res.write(data, () => res.end().status(200));
+  });
+});
+
+app.get("/size", async (req, res) => {
+  await fs.promises
+    .stat("data.txt", (err) => {
+      if (err) res.end(err);
+    })
+    .then((dat) => {
+      res.write("Size : " + dat.size + " bytes", () => res.end().status(200));
+      return;
+    })
+    .catch((err) => res.end("Error Occured"));
+});
+
+app.get("/getandclear", (req, res) => {
+  fs.readFile("data.txt", "utf-8", (err, data) => {
+    if (err) res.end("Some error has occured");
+    fs.writeFile("data.txt", "", () => console.log("Done"));
+    if (data.length != 0) res.write(data, () => res.end().status(200));
+    else res.write("File is empty", () => res.end().status(200));
+  });
+});
+
+setInterval(async () => {
+  if (!isFetching) {
+    isFetching = true;
+    await fetchData();
+    isFetching = false;
+  } else {
+    console.log("Skipping this cycle, previous call still in progress.");
+  }
 }, 15000);
 
 app.listen(5000, () => console.log("server"));
