@@ -87,4 +87,4 @@ setInterval(async () => {
   }
 }, 45000);
 
-app.listen(5000, () => console.log("server"));
+app.listen(5000, "0.0.0.0", () => console.log("server"));
