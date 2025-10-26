@@ -30,7 +30,10 @@ async function fetchData() {
       method: "GET",
     }
   )
-    .then((data) => data.json())
+    .then((data) => {
+      console.log(data);
+      return data.json();
+    })
     .then((dat) => {
       let a = "";
       a += dat.data.list[0].issueNumber.toString();
