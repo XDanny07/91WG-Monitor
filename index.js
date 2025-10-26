@@ -31,7 +31,6 @@ async function fetchData() {
     }
   )
     .then((data) => {
-      console.log(data);
       return data.json();
     })
     .then((dat) => {
