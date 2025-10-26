@@ -1,8 +1,6 @@
 import fs from "fs";
 import express from "express";
 import cors from "cors";
-import { configDotenv } from "dotenv";
-configDotenv();
 const app = express();
 app.use(cors());
 app.get("/", (req, res) => {
@@ -13,26 +11,25 @@ var lastid = -1;
 var isFetching = false;
 
 async function fetchData() {
-  fetch(process.env.URI, {
-    headers: {
-      accept: "application/json, text/plain, */*",
-      "accept-language": "en-US,en;q=0.9",
-      authorization: "",
-      "content-type": "application/json;charset=UTF-8",
-      priority: "u=1, i",
-      "sec-ch-ua":
-        '"Chromium";v="130", "Microsoft Edge";v="130", "Not?A_Brand";v="99"',
-      "sec-ch-ua-mobile": "?0",
-      "sec-ch-ua-platform": '"Windows"',
-      "sec-fetch-dest": "empty",
-      "sec-fetch-mode": "cors",
-      "sec-fetch-site": "cross-site",
-      Referer: process.env.REF,
-      "Referrer-Policy": "strict-origin-when-cross-origin",
-    },
-    body: '{"pageSize":10,"pageNo":1,"typeId":30,"language":0,"random":"1ab77dee5fee4369897f49952e1b8583","signature":"201A716F5A7B0774B59C2B7507766368","timestamp":1729370429}',
-    method: "POST",
-  })
+  fetch(
+    "https://draw.ar-lottery01.com/WinGo/WinGo_3M/GetHistoryIssuePage.json?ts=1761472614820",
+    {
+      headers: {
+        accept: "application/json, text/plain, */*",
+        "accept-language": "en-US,en;q=0.9",
+        priority: "u=1, i",
+        "sec-ch-ua":
+          '"Microsoft Edge";v="141", "Not?A_Brand";v="8", "Chromium";v="141"',
+        "sec-ch-ua-mobile": "?1",
+        "sec-ch-ua-platform": '"Android"',
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "cross-site",
+      },
+      body: null,
+      method: "GET",
+    }
+  )
     .then((data) => data.json())
     .then((dat) => {
       let a = "";
@@ -40,7 +37,7 @@ async function fetchData() {
       var idx = Number(a.slice(-4));
       var ch = "{'id':" + dat.data.list[0].issueNumber + ",";
       ch += "'num':" + dat.data.list[0].number + ",";
-      ch += "'col':'" + dat.data.list[0].colour[0] + "',";
+      ch += "'col':'" + dat.data.list[0].color.toString() + "',";
       ch += dat.data.list[0].number >= 5 ? "'type':'B'},\n" : "'type':'S'},\n";
       if (lastid == -1 || (idx - lastid + 2880) % 2880 == 1) {
         lastid = Number(idx);
@@ -88,6 +85,6 @@ setInterval(async () => {
   } else {
     console.log("Skipping this cycle, previous call still in progress.");
   }
-}, 15000);
+}, 45000);
 
 app.listen(5000, () => console.log("server"));
